@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>For Ahmed 💖</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, 
+            #ffd6f2, #ffeef7);
+            font-family: 'Georgia', serif;
+            text-align: center;
+            color: #5a2a45;
+            overflow-x: hidden;
+        }
+        .container {
+            padding-top: 50px;
+            animation: fadeIn 2.5s ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+        h1 { font-size: 42px; }
+        .glow { color: #ff3e87; text-shadow: 0 0 10px #ff99bb; }
+        p { font-size: 20px; width: 70%; margin: auto; line-height: 1.8; }
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            border: none;
+            background-color: #ef619f;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover { background-color: #ff3e87; transform: scale(1.05); }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        .hidden { display: none; }
+
+        /* Floating hearts */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff3e87;
+            transform: rotate(-45deg);
+            animation: floatUp 4s linear infinite;
+            z-index: 0;
+        }
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff3e87;
+            border-radius: 50%;
+        }
+        .heart::before { top: -10px; left: 0; }
+        .heart::after { left: 10px; top: 0; }
+        @keyframes floatUp {
+            0% {transform: translateY(0) rotate(-45deg); opacity: 1;}
+            100% {transform: translateY(-600px) rotate(-45deg); opacity: 0;}
+        }
+
+        /* Chessboard */
+        .chess-board {
+            display: grid;
+            grid-template-columns: repeat(8, 60px);
+            grid-template-rows: repeat(8, 60px);
+            margin: 20px auto;
+            border: 3px solid #5a2a45;
+            width: 480px;
+            height: 480px;
+            position: relative;
+        }
+        .cell {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            cursor: pointer;
+        }
+        .cell.black { background-color: #5a2a45; color: #fff; }
+        .cell.white { background-color: #fff; color: #5a2a45; }
+
+        /* Sticker message sur la table au centre */
+        #tableMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ff6fa5;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 0 15px #ff99c8;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 5;
+            text-align: center;
+            pointer-events: none; /* pour ne pas bloquer le clic sur les cases */
+        }
+
+        /* Sticker final */
+        .sticker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff6fa5;
+            color: white;
+            font-weight: bold;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 0 15px #ff99c8;
+            font-size: 16px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .sticker.show { opacity: 1; }
+        .sticker span { font-size: 24px; }
+
+    </style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <h1> Rare Human Detected: </h1>
+    <h2> <span class="glow"> ✨ Ahmed ✨</span></h2>
+    <p>
+        Some people are born on ordinary days.<br>
+        But you were born on February 29.<br><br>
+        Which means the universe made you rare.<br>
+        Limited edition.<br>
+        No duplicates.<br><br>
+        Even if today doesn’t officially exist…<br>
+        You exist.<br>
+        And that’s what matters.
+    </p>
+
+    <button onclick="nextMessage()">Continue ❤️</button>
+
+
+    <div id="second" class="hidden">
+        <p style="font-size:22px; color:#ff3e8b; margin-top:10px; animation: bounce 1s infinite;"> 
+    <span class="glow"> 🥰 Play me !!!! 🥰</span>
+</p>
+        <div class="chess-board" id="chessBoard"></div>
+
+
+<div id="tableMessage"></div>
+<button id="letterBtn" class="hidden" onclick="openMessage()">Read the Letter 💌</button>
+    
+</div>
+
+<div class="sticker" id="sticker"><span>🤗🤗</span> Sending Virtual Hugs</div>
+
+<script>
+window.addEventListener("click", function () {
+    document.getElementById("bgMusic").play();
+}, { once: true });
+
+function nextMessage() {
+    document.getElementById("second").style.display = "block";
+    createHearts();
+    createChess();
+}
+
+// Floating hearts
+function createHearts() {
+    for (let i = 0; i < 30; i++) {
+        let heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.animationDuration = 3 + Math.random() * 3 + 's';
+        heart.style.width = 15 + Math.random() * 20 + 'px';
+        heart.style.height = heart.style.width;
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+    }
+}
+
+// Chessboard mini-game
+function createChess() {
+    const board = document.getElementById('chessBoard');
+    const pieces = ['♜','♞','♝','♛','♚','♝','♞','♜','♟','♟','♟','♟','♟','♟','♟','♟'];
+    for(let i=0;i<64;i++){
+        let cell = document.createElement('div');
+        cell.className = 'cell ' + ((Math.floor(i/8)+i)%2===0?'white':'black');
+        if(i<16) cell.textContent = pieces[i];
+
+        // Message au centre quand une pièce est cliquée
+        cell.addEventListener('click', () => {
+            const tableMsg = document.getElementById('tableMessage');
+            tableMsg.textContent = "🎉 You won! Ofc, like you always do 😏 Now you can read the letter ❤️";
+            tableMsg.style.opacity =10;
+
+            // Après 2 secondes, disparition et bouton lettre
+            setTimeout(()=> {
+                tableMsg.style.opacity = 0;
+                document.getElementById('letterBtn').classList.remove('hidden');
+            }, 2000);
+        });
+
+        board.appendChild(cell);
+    }
+}
+
+// Ouvrir message final
+function openMessage() {
+    var newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+        <html>
+        <head>
+            <title>💌</title>
+            <style>
+                body { font-family: 'Georgia', serif; text-align: center; padding:50px; background: linear-gradient(to bottom right,#ffd6e8,#ffeef7); color:#5a2a45; }
+                p { font-size: 20px; line-height: 1.8; }
+                .sticker { position: fixed; bottom:20px; right:20px; background:#ff6fa5; color:white; font-weight:bold; padding:15px 25px; border-radius:50px; box-shadow:0 0 15px #ff99c8; display:flex; align-items:center; gap:10px; font-size:16px; opacity:1; }
+            </style>
+        </head>
+        <body>
+            <p>
+                Hello, it's Doudou…<br>
+                Don’t mind me, I’m just a beginner 🥺<br><br>
+                But I wanted to create something with my own hands for you.<br><br>
+                Happy birthday to you ❤️ I’m lucky and happy to have you.<br>
+                I’m wishing you all the best, success, peace, strength, and happiness.<br><br>
+                May this year be full of beautiful moments<br>
+                You are rare.<br>
+                And I’m grateful for you.
+            </p>
+            <div class="sticker"><span>🤗🤗</span> Sending Virtual Hugs</div>
+        </body>
+        </html>
+    `);
+    newWindow.document.close();
+}
+</script>
+</body>
+</html>
